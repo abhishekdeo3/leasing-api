@@ -1,10 +1,10 @@
-package com.allene.leasingapp;
+package com.allene.leasingapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LeasingAppApplicationTests {
+class LeasingApiApplicationTests {
 
     @Test
     void contextLoads() {

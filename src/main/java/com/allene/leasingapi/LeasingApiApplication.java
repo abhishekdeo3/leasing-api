@@ -1,13 +1,13 @@
-package com.allene.leasingapp;
+package com.allene.leasingapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LeasingAppApplication {
+public class LeasingApiApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(LeasingAppApplication.class, args);
+        SpringApplication.run(LeasingApiApplication.class, args);
     }
 
 }
