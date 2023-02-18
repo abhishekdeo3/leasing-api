@@ -1,0 +1,79 @@
+spring:
+  application:
+    name: leasing-api
+  session:
+    store-type: none
+  profiles:
+    active: local
+  datasource:
+    url: jdbc:mysql://localhost:3306/allane?user=user&password=password
+    hikari:
+      schema: allane
+  jpa:
+    database: mysql
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        default_schema: allane
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 0
+    schemas: allane
+
+  security:
+    user:
+      name: "allane"
+      password: "allane"
+
+springdoc:
+  swagger-ui:
+    tagsSorter: alpha
+  api-docs:
+    groups:
+      enabled: true
+
+server:
+  port: 8091
+  servlet:
+    context-path: /
+  compression:
+    enabled: true
+
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: health,info
+      base-path: /.well-known
+      path-mapping:
+        info: ready
+        health: live
+  endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
+
+logging:
+  level:
+    org.hibernate:
+      SQL: DEBUG
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/allane?user=user&password=password
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: validate
+        format_sql: true

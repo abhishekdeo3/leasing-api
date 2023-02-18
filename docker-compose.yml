@@ -1,16 +1,17 @@
-version: '2'
+version: '3.3'
 
 services:
 
   db:
-    image: mysql:5.7.8
+    image: mysql
     restart: always
     ports:
     - 3306:3306
     environment:
-      POSTGRES_DB: allene
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      MYSQL_DATABASE: allane
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
 
   adminer:
     image: adminer

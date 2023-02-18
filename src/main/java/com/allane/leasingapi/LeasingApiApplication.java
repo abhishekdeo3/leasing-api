@@ -1,4 +1,4 @@
-package com.allene.leasingapi;
+package com.allane.leasingapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

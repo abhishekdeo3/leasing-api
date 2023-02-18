@@ -1,55 +1,121 @@
-plugins {
-    id 'java'
-    id 'org.springframework.boot' version '3.0.2'
-    id 'io.spring.dependency-management' version '1.1.0'
-    id 'org.hibernate.orm' version '6.1.6.Final'
-    id 'org.graalvm.buildtools.native' version '0.9.18'
-}
-
-group = 'com.allene'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+buildscript {
+    ext {
+        springBootVersion = '2.7.5'
+        springDocVersion = '1.6.12'
+        lombokVersion = '1.18.24'
+        springSecurityVersion = '5.7.5'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath 'org.owasp:dependency-check-gradle:7.4.4'
     }
 }
+
+plugins {
+    id 'java'
+    id "org.springframework.boot" version "${springBootVersion}"
+    id "io.spring.dependency-management" version "1.0.14.RELEASE"
+    id 'jacoco'
+}
+
+apply plugin: 'org.owasp.dependencycheck'
+
+project.ext {
+    serviceName = rootProject.name
+}
+
+group = "com.allane"
+version = "0.0.1-SNAPSHOT"
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'org.flywaydb:flyway-core'
-    implementation 'org.flywaydb:flyway-mysql'
-    compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'com.mysql:mysql-connector-j'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'io.projectreactor:reactor-test'
-    testImplementation 'org.springframework.security:spring-security-test'
+    implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation('org.springframework.boot:spring-boot-starter-actuator')
+
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+
+    implementation('org.flywaydb:flyway-core')
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.32'
+    implementation("org.flywaydb:flyway-mysql")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    implementation("org.springdoc:springdoc-openapi-ui:${springDocVersion}")
+    implementation("org.springdoc:springdoc-openapi-data-rest:${springDocVersion}")
+    implementation("org.springdoc:springdoc-openapi-security:${springDocVersion}")
+    implementation("org.springframework.boot:spring-boot-starter-validation:3.0.2")
+
+    // Lombok
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
+    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+    testCompileOnly("org.projectlombok:lombok:${lombokVersion}")
+    testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+
+    // Version overrides
+    implementation('org.yaml:snakeyaml:1.33')
+    implementation("org.springframework.security:spring-security-config:${springSecurityVersion}")
+    implementation("org.springframework.security:spring-security-crypto:${springSecurityVersion}")
+    implementation("org.springframework.security:spring-security-core:${springSecurityVersion}")
+    implementation("org.springframework.security:spring-security-web:${springSecurityVersion}")
+
+    // Test
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.security:spring-security-test')
+    testImplementation('org.testcontainers:mysql:1.17.6')
+    testImplementation('org.testcontainers:junit-jupiter:1.17.2')
+    testImplementation 'com.h2database:h2'
+
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
+
+    finalizedBy jacocoTestReport // report is always generated after tests run
 }
 
-hibernate {
-    enhancement {
-        lazyInitialization true
-        dirtyTracking true
-        associationManagement true
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required = true
+        csv.required = false
+        xml.destination file("${buildDir}/reports/jacoco.xml")
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = 'INSTRUCTION'
+                value = 'COVEREDRATIO'
+                minimum = 0.20
+            }
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.09
+            }
+        }
+    }
+}
+
+dependencyCheck {
+    cveValidForHours = 24
+    suppressionFile = 'dependencySuppressions.xml'
+    failBuildOnCVSS = 7
+    analyzers {
+        assemblyEnabled = false
+        nexusEnabled = false
+        nuspecEnabled = false
+        nodeEnabled = false
     }
 }
 
