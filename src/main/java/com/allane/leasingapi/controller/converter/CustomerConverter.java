@@ -5,6 +5,7 @@ import com.allane.leasingapi.model.ContractEntity;
 import com.allane.leasingapi.model.CustomerEntity;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.stream.Collectors;
 
 @Component
@@ -17,9 +18,10 @@ public class CustomerConverter implements Converter<CustomerEntity, Customer> {
                 .customerId(customerEntity.getId())
                 .firstName(customerEntity.getFirstName())
                 .lastName(customerEntity.getLastName())
-                .birthdate(customerEntity.getBirthdate())
-                .contractList(customerEntity.getLeasingContractEntities() != null ? customerEntity.getLeasingContractEntities()
-                        .stream().map(this::convert).collect(Collectors.toSet()) : null)
+                .birthdate(new SimpleDateFormat("yyyy-MM-dd").format(customerEntity.getBirthdate()))
+                .contractList(customerEntity.getLeasingContractEntities() != null ?
+                        customerEntity.getLeasingContractEntities().stream().map(this::convert)
+                                .collect(Collectors.toSet()) : null)
                 .build();
     }
 

@@ -18,7 +18,7 @@ public class VehicleConverter implements Converter<VehicleEntity, Vehicle> {
                 .price(vehicleEntity.getPrice())
                 .year(vehicleEntity.getModelYear())
                 .vehicleIdentificationNumber(vehicleEntity.getVehicleIdentificationNumber())
-                .contract(convert(vehicleEntity.getContractEntity()))
+                .contract(vehicleEntity.getContractEntity() != null ? convert(vehicleEntity.getContractEntity()) : null)
                 .build();
     }
 

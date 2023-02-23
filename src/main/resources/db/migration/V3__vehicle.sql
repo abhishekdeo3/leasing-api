@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS vehicle
     model                         VARCHAR(255)           NOT NULL,
     model_year                    YEAR                   NOT NULL,
     price                         DOUBLE PRECISION(7, 2) NOT NULL,
-    vehicle_identification_number VARCHAR(255)
+    vehicle_identification_number VARCHAR(255) UNIQUE
 );

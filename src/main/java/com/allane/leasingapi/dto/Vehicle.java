@@ -19,7 +19,7 @@ public class Vehicle {
     @JsonProperty("model")
     private String model;
 
-    @JsonProperty("year")
+    @JsonProperty("model_year")
     private Integer year;
 
     @JsonProperty("vehicle_identification_number")

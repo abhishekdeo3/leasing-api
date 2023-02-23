@@ -4,11 +4,8 @@ import com.allane.leasingapi.controller.converter.Converter;
 import com.allane.leasingapi.dto.Contract;
 import com.allane.leasingapi.dto.Contracts;
 import com.allane.leasingapi.dto.cruddto.CrudContractDto;
-import com.allane.leasingapi.exception.BadRequestException;
 import com.allane.leasingapi.exception.NotFoundException;
 import com.allane.leasingapi.model.ContractEntity;
-import com.allane.leasingapi.model.CustomerEntity;
-import com.allane.leasingapi.model.VehicleEntity;
 import com.allane.leasingapi.repository.ContractRepository;
 import com.allane.leasingapi.repository.CustomerRepository;
 import com.allane.leasingapi.repository.VehicleRepository;
@@ -16,25 +13,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class ContractService implements CRUDOperation<Contract, CrudContractDto, Long, Contracts> {
+public class ContractService extends Helper implements CRUDOperation<Contract, CrudContractDto, Long, Contracts> {
+
+    private static final String CONTRACT = "Contract";
 
     private final ContractRepository contractRepository;
-
-    private final CustomerRepository customerRepository;
-
-    private final VehicleRepository vehicleRepository;
 
     private final Converter<ContractEntity, Contract> contractConverter;
 
     public ContractService(ContractRepository contractRepository, CustomerRepository customerRepository,
                            VehicleRepository vehicleRepository, Converter<ContractEntity, Contract> contractConverter) {
+        super(vehicleRepository, contractRepository, customerRepository);
         this.contractRepository = contractRepository;
-        this.customerRepository = customerRepository;
-        this.vehicleRepository = vehicleRepository;
         this.contractConverter = contractConverter;
     }
+
 
     @Override
     @Transactional
@@ -43,8 +39,8 @@ public class ContractService implements CRUDOperation<Contract, CrudContractDto,
         ContractEntity contractEntity = new ContractEntity();
 
         contractEntity.setMonthlyRate(crudContractDto.getMonthlyRate());
-        contractEntity.setCustomerEntity(findCustomerEntity(crudContractDto.getCustomerId()));
-        contractEntity.setVehicleEntity(findVehicleEntity(crudContractDto.getVehicleId()));
+        contractEntity.setCustomerEntity(findCustomerEntity(crudContractDto.getCustomerId()).orElse(null));
+        contractEntity.setVehicleEntity(findVehicleEntity(crudContractDto.getVehicleId()).orElse(null));
         contractEntity.setValidFrom(crudContractDto.getValidFrom());
         contractEntity.setValidUntil(crudContractDto.getValidUntil());
 
@@ -57,32 +53,42 @@ public class ContractService implements CRUDOperation<Contract, CrudContractDto,
     @Transactional(readOnly = true)
     public Contract find(Long contractNumber) {
 
-        return contractConverter.convert(findContractEntity(contractNumber));
+        Optional<ContractEntity> contractEntity = findContractEntity(contractNumber);
+
+        return contractEntity.map(contractConverter::convert)
+                .orElseThrow(() -> new NotFoundException(CONTRACT, contractNumber));
     }
 
     @Override
     @Transactional
     public Contract update(Long contractNumber, CrudContractDto crudContractDto) {
 
-        ContractEntity contractEntity = findContractEntity(contractNumber);
+        ContractEntity contractEntity = findContractEntity(contractNumber)
+                .orElseThrow(() -> new NotFoundException(CONTRACT, contractNumber));
 
         contractEntity.setMonthlyRate(crudContractDto.getMonthlyRate());
         contractEntity.setValidFrom(crudContractDto.getValidFrom());
         contractEntity.setValidUntil(crudContractDto.getValidUntil());
-        contractEntity.setCustomerEntity(findCustomerEntity(crudContractDto.getCustomerId()));
-        contractEntity.setVehicleEntity(findVehicleEntity(crudContractDto.getVehicleId()));
+        contractEntity.setCustomerEntity(crudContractDto.getCustomerId() != null ?
+                findCustomerEntity(crudContractDto.getCustomerId()).orElse(null) : null);
+        contractEntity.setVehicleEntity(crudContractDto.getVehicleId() != null ?
+                findVehicleEntity(crudContractDto.getVehicleId()).orElse(null) : null);
 
         ContractEntity saved = contractRepository.save(contractEntity);
 
         return contractConverter.convert(saved);
-
     }
 
     @Override
     @Transactional
     public void delete(Long contractNumber) {
 
-        ContractEntity contractEntity = findContractEntity(contractNumber);
+        ContractEntity contractEntity = findContractEntity(contractNumber)
+                .orElseThrow(() -> new NotFoundException(CONTRACT, contractNumber));
+
+        contractEntity.setVehicleEntity(null);
+        contractEntity.setCustomerEntity(null);
+
         contractRepository.deleteById(contractEntity.getId());
     }
 
@@ -96,23 +102,5 @@ public class ContractService implements CRUDOperation<Contract, CrudContractDto,
         contracts.setContractList(contractList);
 
         return contracts;
-    }
-
-    private CustomerEntity findCustomerEntity(Long customerId) {
-
-        return customerRepository.findById(customerId)
-                .orElseThrow(() -> new BadRequestException("Customer Not Found for ID: " + customerId));
-    }
-
-    private VehicleEntity findVehicleEntity(Long vehicleId) {
-
-        return vehicleRepository.findById(vehicleId)
-                .orElseThrow(() -> new BadRequestException("Vehicle Not Found for ID: " + vehicleId));
-    }
-
-    private ContractEntity findContractEntity(Long contractNumber) {
-
-        return contractRepository.findById(contractNumber)
-                .orElseThrow(() -> new NotFoundException("Not found with Contract Number =" + contractNumber));
     }
 }

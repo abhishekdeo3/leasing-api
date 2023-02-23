@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @Builder
@@ -15,6 +17,12 @@ public class Contract {
 
     @JsonProperty("monthly_rate")
     private double monthlyRate;
+
+    @JsonProperty("valid_from")
+    private String validFrom;
+
+    @JsonProperty("valid_until")
+    private String validUntil;
 
     @JsonProperty("customer")
     private Customer customer;

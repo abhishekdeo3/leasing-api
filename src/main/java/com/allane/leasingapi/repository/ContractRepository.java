@@ -8,13 +8,15 @@ import java.util.Set;
 
 public interface ContractRepository extends JpaRepository<ContractEntity, Long> {
 
-    @Query("SELECT contractEntity FROM ContractEntity contractEntity " +
-            "JOIN FETCH CustomerEntity customerEntity " +
-            "WHERE customerEntity.id = :customerId")
+    @Query(" SELECT contractEntity FROM ContractEntity contractEntity " +
+            " JOIN FETCH CustomerEntity customerEntity " +
+            " ON contractEntity.customerEntity.id = customerEntity.id " +
+            " WHERE customerEntity.id = :customerId")
     Set<ContractEntity> findByCustomerId(Long customerId);
 
-    @Query("SELECT contractEntity FROM ContractEntity contractEntity " +
-            "JOIN FETCH VehicleEntity vehicleEntity " +
-            "WHERE vehicleEntity.id = :vehicleId")
+    @Query(" SELECT contractEntity FROM ContractEntity contractEntity " +
+            " JOIN FETCH VehicleEntity vehicleEntity " +
+            " ON contractEntity.vehicleEntity.id = vehicleEntity.id " +
+            " WHERE vehicleEntity.id = :vehicleId")
     ContractEntity findByVehicleId(Long vehicleId);
 }

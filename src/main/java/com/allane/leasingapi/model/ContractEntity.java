@@ -33,7 +33,7 @@ public class ContractEntity {
     @JoinColumn(name = "CUSTOMER_ID")
     private CustomerEntity customerEntity;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "VEHICLE_ID", referencedColumnName = "ID")
     private VehicleEntity vehicleEntity;
 }

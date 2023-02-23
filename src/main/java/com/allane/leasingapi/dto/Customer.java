@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -23,7 +22,7 @@ public class Customer {
     private String lastName;
 
     @JsonProperty("birthdate")
-    private Date birthdate;
+    private String birthdate;
 
     @JsonProperty("contracts")
     private Set<Contract> contractList;

@@ -4,6 +4,8 @@ import com.allane.leasingapi.dto.Contract;
 import com.allane.leasingapi.model.ContractEntity;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+
 @Component
 public class ContractConverter implements Converter<ContractEntity, Contract> {
 
@@ -13,18 +15,20 @@ public class ContractConverter implements Converter<ContractEntity, Contract> {
         return Contract.builder()
                 .contractNumber(contractEntity.getId())
                 .monthlyRate(contractEntity.getMonthlyRate())
-                .vehicle(Contract.Vehicle.builder()
+                .validFrom(new SimpleDateFormat("yyyy-MM-dd").format(contractEntity.getValidFrom()))
+                .validUntil(new SimpleDateFormat("yyyy-MM-dd").format(contractEntity.getValidUntil()))
+                .vehicle(contractEntity.getVehicleEntity() != null ? Contract.Vehicle.builder()
                         .vehicleId(contractEntity.getVehicleEntity().getId())
                         .brand(contractEntity.getVehicleEntity().getBrand())
                         .model(contractEntity.getVehicleEntity().getModel())
                         .modelYear(contractEntity.getVehicleEntity().getModelYear())
                         .vehicleIdentificationNumber(contractEntity.getVehicleEntity().getVehicleIdentificationNumber())
-                        .build())
-                .customer(Contract.Customer.builder()
+                        .build() : null)
+                .customer(contractEntity.getCustomerEntity() != null ? Contract.Customer.builder()
                         .customerId(contractEntity.getCustomerEntity().getId())
                         .firstName(contractEntity.getCustomerEntity().getFirstName())
                         .lastName(contractEntity.getCustomerEntity().getLastName())
-                        .build())
+                        .build() : null)
                 .build();
     }
 }

@@ -4,18 +4,22 @@ import com.allane.leasingapi.controller.converter.Converter;
 import com.allane.leasingapi.dto.Vehicle;
 import com.allane.leasingapi.dto.Vehicles;
 import com.allane.leasingapi.dto.cruddto.CrudVehicleDto;
-import com.allane.leasingapi.exception.BadRequestException;
+import com.allane.leasingapi.exception.NotFoundException;
 import com.allane.leasingapi.model.ContractEntity;
 import com.allane.leasingapi.model.VehicleEntity;
 import com.allane.leasingapi.repository.ContractRepository;
+import com.allane.leasingapi.repository.CustomerRepository;
 import com.allane.leasingapi.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class VehicleService implements CRUDOperation<Vehicle, CrudVehicleDto, Long, Vehicles> {
+public class VehicleService extends Helper implements CRUDOperation<Vehicle, CrudVehicleDto, Long, Vehicles> {
+
+    private static final String VEHICLE = "Vehicle";
 
     private final VehicleRepository vehicleRepository;
 
@@ -24,7 +28,8 @@ public class VehicleService implements CRUDOperation<Vehicle, CrudVehicleDto, Lo
     private final Converter<VehicleEntity, Vehicle> vehicleConverter;
 
     public VehicleService(VehicleRepository vehicleRepository, ContractRepository contractRepository,
-                          Converter<VehicleEntity, Vehicle> vehicleConverter) {
+                          Converter<VehicleEntity, Vehicle> vehicleConverter, CustomerRepository customerRepository) {
+        super(vehicleRepository, contractRepository, customerRepository);
         this.vehicleRepository = vehicleRepository;
         this.contractRepository = contractRepository;
         this.vehicleConverter = vehicleConverter;
@@ -34,7 +39,10 @@ public class VehicleService implements CRUDOperation<Vehicle, CrudVehicleDto, Lo
     @Transactional(readOnly = true)
     public Vehicle find(Long vehicleId) {
 
-        return vehicleConverter.convert(findVehicleEntity(vehicleId));
+        Optional<VehicleEntity> vehicleEntity = findVehicleEntity(vehicleId);
+
+        return vehicleEntity.map(vehicleConverter::convert)
+                .orElseThrow(() -> new NotFoundException(VEHICLE, vehicleId));
     }
 
     @Override
@@ -58,7 +66,17 @@ public class VehicleService implements CRUDOperation<Vehicle, CrudVehicleDto, Lo
     @Transactional
     public void delete(Long vehicleId) {
 
-        VehicleEntity vehicleEntity = findVehicleEntity(vehicleId);
+        VehicleEntity vehicleEntity = findVehicleEntity(vehicleId)
+                .orElseThrow(() -> new NotFoundException(VEHICLE, vehicleId));
+
+        ContractEntity contractEntity = findContractEntityByVehicleId(vehicleId);
+
+        if (contractEntity != null) {
+
+            contractEntity.setVehicleEntity(null);
+            contractRepository.save(contractEntity);
+        }
+
         vehicleRepository.deleteById(vehicleEntity.getId());
     }
 
@@ -78,27 +96,19 @@ public class VehicleService implements CRUDOperation<Vehicle, CrudVehicleDto, Lo
     @Transactional
     public Vehicle update(Long vehicleId, CrudVehicleDto crudVehicleDto) {
 
-        VehicleEntity vehicleEntity = findVehicleEntity(vehicleId);
+        VehicleEntity vehicleEntity = findVehicleEntity(vehicleId)
+                .orElseThrow(() -> new NotFoundException(VEHICLE, vehicleId));
 
         vehicleEntity.setBrand(crudVehicleDto.getBrand());
         vehicleEntity.setModel(crudVehicleDto.getModel());
         vehicleEntity.setModelYear(crudVehicleDto.getModelYear());
         vehicleEntity.setPrice(crudVehicleDto.getPrice());
         vehicleEntity.setVehicleIdentificationNumber(crudVehicleDto.getVehicleIdentificationNumber());
-        vehicleEntity.setContractEntity(findContractEntity(vehicleId));
+        vehicleEntity.setContractEntity(findContractEntityByVehicleId(vehicleId) != null ?
+                findContractEntityByVehicleId(vehicleId) : null);
 
         VehicleEntity saved = vehicleRepository.save(vehicleEntity);
 
         return vehicleConverter.convert(saved);
-    }
-
-    private VehicleEntity findVehicleEntity(Long vehicleId) {
-
-        return vehicleRepository.findById(vehicleId)
-                .orElseThrow(() -> new BadRequestException("Vehicle Not Found for ID: " + vehicleId));
-    }
-
-    private ContractEntity findContractEntity(Long vehicleId) {
-        return contractRepository.findByVehicleId(vehicleId);
     }
 }
