@@ -39,8 +39,15 @@ public class ContractService extends Helper implements CRUDOperation<Contract, C
         ContractEntity contractEntity = new ContractEntity();
 
         contractEntity.setMonthlyRate(crudContractDto.getMonthlyRate());
-        contractEntity.setCustomerEntity(findCustomerEntity(crudContractDto.getCustomerId()).orElse(null));
-        contractEntity.setVehicleEntity(findVehicleEntity(crudContractDto.getVehicleId()).orElse(null));
+
+        contractEntity.setCustomerEntity(crudContractDto.getCustomerId() != null ?
+                findCustomerEntity(crudContractDto.getCustomerId())
+                        .orElseThrow(() -> new NotFoundException("Customer", crudContractDto.getCustomerId())) : null);
+
+        contractEntity.setVehicleEntity(crudContractDto.getVehicleId() != null ?
+                findVehicleEntity(crudContractDto.getVehicleId())
+                        .orElseThrow(() -> new NotFoundException("Vehicle", crudContractDto.getVehicleId())) : null);
+
         contractEntity.setValidFrom(crudContractDto.getValidFrom());
         contractEntity.setValidUntil(crudContractDto.getValidUntil());
 
@@ -69,10 +76,14 @@ public class ContractService extends Helper implements CRUDOperation<Contract, C
         contractEntity.setMonthlyRate(crudContractDto.getMonthlyRate());
         contractEntity.setValidFrom(crudContractDto.getValidFrom());
         contractEntity.setValidUntil(crudContractDto.getValidUntil());
+
         contractEntity.setCustomerEntity(crudContractDto.getCustomerId() != null ?
-                findCustomerEntity(crudContractDto.getCustomerId()).orElse(null) : null);
+                findCustomerEntity(crudContractDto.getCustomerId())
+                        .orElseThrow(() -> new NotFoundException("Customer", crudContractDto.getCustomerId())) : null);
+
         contractEntity.setVehicleEntity(crudContractDto.getVehicleId() != null ?
-                findVehicleEntity(crudContractDto.getVehicleId()).orElse(null) : null);
+                findVehicleEntity(crudContractDto.getVehicleId())
+                        .orElseThrow(() -> new NotFoundException("Vehicle", crudContractDto.getVehicleId())) : null);
 
         ContractEntity saved = contractRepository.save(contractEntity);
 

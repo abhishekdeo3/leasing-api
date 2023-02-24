@@ -104,6 +104,7 @@ public class VehicleService extends Helper implements CRUDOperation<Vehicle, Cru
         vehicleEntity.setModelYear(crudVehicleDto.getModelYear());
         vehicleEntity.setPrice(crudVehicleDto.getPrice());
         vehicleEntity.setVehicleIdentificationNumber(crudVehicleDto.getVehicleIdentificationNumber());
+
         vehicleEntity.setContractEntity(findContractEntityByVehicleId(vehicleId) != null ?
                 findContractEntityByVehicleId(vehicleId) : null);
 

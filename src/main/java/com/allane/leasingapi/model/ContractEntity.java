@@ -29,11 +29,11 @@ public class ContractEntity {
     @Column(name = "VALID_UNTIL")
     private Date validUntil;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CUSTOMER_ID")
     private CustomerEntity customerEntity;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "VEHICLE_ID", referencedColumnName = "ID")
     private VehicleEntity vehicleEntity;
 }

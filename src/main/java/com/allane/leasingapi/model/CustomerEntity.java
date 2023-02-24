@@ -29,6 +29,6 @@ public class CustomerEntity {
     @Column(name = "BIRTHDATE")
     private Date birthdate;
 
-    @OneToMany(mappedBy = "customerEntity")
+    @OneToMany(mappedBy = "customerEntity", fetch = FetchType.EAGER)
     private Set<ContractEntity> leasingContractEntities;
 }

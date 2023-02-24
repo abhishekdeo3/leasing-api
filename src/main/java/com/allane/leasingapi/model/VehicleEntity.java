@@ -33,6 +33,6 @@ public class VehicleEntity {
     @Column(name = "VEHICLE_IDENTIFICATION_NUMBER")
     private String vehicleIdentificationNumber;
 
-    @OneToOne(mappedBy = "vehicleEntity")
+    @OneToOne(mappedBy = "vehicleEntity", fetch = FetchType.EAGER)
     private ContractEntity contractEntity;
 }
