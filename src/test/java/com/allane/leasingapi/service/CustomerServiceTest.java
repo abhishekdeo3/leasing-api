@@ -128,7 +128,6 @@ class CustomerServiceTest extends AbstractIT {
 
         assertThat(list.get(0).getMonthlyRate()).isEqualTo(246.75);
         assertThat(list.get(0).getContractNumber()).isEqualTo(contract.getId());
-
     }
 
     @Test
@@ -248,108 +247,30 @@ class CustomerServiceTest extends AbstractIT {
                 .hasMessage("Not Found with Customer ID: " + customerId);
     }
 
-//    @Test
-//    void Update() {
-//
-//        //Arrange
-//        CrudContractDto input = getContractDTO();
-//
-//        VehicleEntity savedVehicle = vehicleRepository.save(getVehicleEntity());
-//        CustomerEntity savedCustomer = customerRepository.save(getCustomerEntity());
-//
-//        when(spy(classToTest).findCustomerEntity(input.getCustomerId())).thenReturn(Optional.of(savedCustomer));
-//        when(spy(classToTest).findVehicleEntity(input.getVehicleId())).thenReturn(Optional.of(savedVehicle));
-//
-//        //Act
-//        Contract contract = classToTest.create(input);
-//
-//        //Assert
-//        assertThat(contract.getMonthlyRate()).isEqualTo(246.75);
-//        assertThat(contract.getValidFrom()).isEqualTo("2023-05-01");
-//        assertThat(contract.getValidUntil()).isEqualTo("2023-06-02");
-//
-//        assertThat(contract.getCustomer().getCustomerId()).isEqualTo(savedCustomer.getId());
-//        assertThat(contract.getCustomer().getFirstName()).isEqualTo("SOMETHING");
-//        assertThat(contract.getCustomer().getLastName()).isEqualTo("NOTHING");
-//
-//        assertThat(contract.getVehicle().getVehicleId()).isEqualTo(savedVehicle.getId());
-//        assertThat(contract.getVehicle().getBrand()).isEqualTo("ANYTHING");
-//        assertThat(contract.getVehicle().getModel()).isEqualTo("SOMETHING");
-//        assertThat(contract.getVehicle().getModelYear()).isEqualTo(2006);
-//        assertThat(contract.getVehicle().getVehicleIdentificationNumber()).isEqualTo("EVERYTHING");
-//
-//        //Act
-//        CrudContractDto crudContractDto = getCrudContractDto();
-//
-//        VehicleEntity vehicleEntityToUpdate = getVehicleEntity();
-//        vehicleEntityToUpdate.setId(null);
-//        vehicleEntityToUpdate.setVehicleIdentificationNumber("NOTHING");
-//
-//        CustomerEntity customerEntityToUpdate = getCustomerEntity();
-//        customerEntityToUpdate.setId(null);
-//
-//        VehicleEntity updatedVehicle = vehicleRepository.save(vehicleEntityToUpdate);
-//        CustomerEntity updatedCustomer = customerRepository.save(customerEntityToUpdate);
-//
-//        when(spy(classToTest).findCustomerEntity(customerEntityToUpdate.getId())).thenReturn(Optional.of(updatedCustomer));
-//        when(spy(classToTest).findVehicleEntity(updatedVehicle.getId())).thenReturn(Optional.of(updatedVehicle));
-//
-//        crudContractDto.setCustomerId(updatedCustomer.getId());
-//        crudContractDto.setVehicleId(updatedVehicle.getId());
-//
-//        Contract update = classToTest.update(contract.getContractNumber(), crudContractDto);
-//
-//        assertThat(update.getMonthlyRate()).isEqualTo(500.89);
-//        assertThat(update.getValidFrom()).isEqualTo("2022-12-31");
-//        assertThat(update.getValidUntil()).isEqualTo("2026-12-30");
-//        assertThat(update.getVehicle().getVehicleId()).isEqualTo(updatedVehicle.getId());
-//        assertThat(update.getCustomer().getCustomerId()).isEqualTo(updatedCustomer.getId());
-//    }
-//
-//    @Test
-//    void Update_withNull() {
-//
-//        //Arrange
-//        CrudContractDto input = getContractDTO();
-//
-//        VehicleEntity savedVehicle = vehicleRepository.save(getVehicleEntity());
-//        CustomerEntity savedCustomer = customerRepository.save(getCustomerEntity());
-//
-//        when(spy(classToTest).findCustomerEntity(input.getCustomerId())).thenReturn(Optional.of(savedCustomer));
-//        when(spy(classToTest).findVehicleEntity(input.getVehicleId())).thenReturn(Optional.of(savedVehicle));
-//
-//        //Act
-//        Contract contract = classToTest.create(input);
-//
-//        //Assert
-//        assertThat(contract.getMonthlyRate()).isEqualTo(246.75);
-//        assertThat(contract.getValidFrom()).isEqualTo("2023-05-01");
-//        assertThat(contract.getValidUntil()).isEqualTo("2023-06-02");
-//
-//        assertThat(contract.getCustomer().getCustomerId()).isEqualTo(savedCustomer.getId());
-//        assertThat(contract.getCustomer().getFirstName()).isEqualTo("SOMETHING");
-//        assertThat(contract.getCustomer().getLastName()).isEqualTo("NOTHING");
-//
-//        assertThat(contract.getVehicle().getVehicleId()).isEqualTo(savedVehicle.getId());
-//        assertThat(contract.getVehicle().getBrand()).isEqualTo("ANYTHING");
-//        assertThat(contract.getVehicle().getModel()).isEqualTo("SOMETHING");
-//        assertThat(contract.getVehicle().getModelYear()).isEqualTo(2006);
-//        assertThat(contract.getVehicle().getVehicleIdentificationNumber()).isEqualTo("EVERYTHING");
-//
-//        //Act
-//        CrudContractDto crudContractDto = getCrudContractDto();
-//
-//        crudContractDto.setCustomerId(null);
-//        crudContractDto.setVehicleId(null);
-//
-//        Contract update = classToTest.update(contract.getContractNumber(), crudContractDto);
-//
-//        assertThat(update.getMonthlyRate()).isEqualTo(500.89);
-//        assertThat(update.getValidFrom()).isEqualTo("2022-12-31");
-//        assertThat(update.getValidUntil()).isEqualTo("2026-12-30");
-//        assertThat(update.getVehicle()).isNull();
-//        assertThat(update.getCustomer()).isNull();
-//    }
+    @Test
+    void Update() {
+
+        //Arrange
+        CustomerEntity savedCustomer = customerRepository.save(getCustomerEntity());
+
+        assertThat(savedCustomer.getFirstName()).isEqualTo("SOMETHING");
+        assertThat(savedCustomer.getLastName()).isEqualTo("NOTHING");
+        assertThat(savedCustomer.getBirthdate()).isEqualTo("2023-06-02");
+
+        CrudCustomerDto input = getCustomerDTO();
+        input.setFirstName("ANYTHING");
+        input.setLastName("EVERYTHING");
+        input.setBirthdate(Date.valueOf("1923-06-02"));
+
+        //Act
+        Customer customer = classToTest.update(savedCustomer.getId(), input);
+
+        //Assert
+        assertThat(customer.getCustomerId()).isEqualTo(savedCustomer.getId());
+        assertThat(customer.getFirstName()).isEqualTo("ANYTHING");
+        assertThat(customer.getLastName()).isEqualTo("EVERYTHING");
+        assertThat(customer.getBirthdate()).isEqualTo("1923-06-02");
+    }
 
     @Test
     void update_NotFound() {
@@ -398,18 +319,6 @@ class CustomerServiceTest extends AbstractIT {
         vehicleEntity.setModelYear(2006);
 
         return vehicleEntity;
-    }
-
-    private CrudContractDto getCrudContractDto() {
-
-        CrudContractDto crudContractDto = new CrudContractDto();
-        crudContractDto.setMonthlyRate(500.89);
-        crudContractDto.setValidFrom(Date.valueOf("2022-12-31"));
-        crudContractDto.setValidUntil(Date.valueOf("2026-12-30"));
-        crudContractDto.setCustomerId(1002L);
-        crudContractDto.setVehicleId(20008L);
-
-        return crudContractDto;
     }
 
     private CrudContractDto getContractDTO() {
