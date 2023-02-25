@@ -5,6 +5,7 @@ import com.allane.leasingapi.LeasingApiApplication;
 import com.allane.leasingapi.dto.Contract;
 import com.allane.leasingapi.dto.Contracts;
 import com.allane.leasingapi.dto.cruddto.CrudContractDto;
+import com.allane.leasingapi.exception.BadRequestException;
 import com.allane.leasingapi.exception.NotFoundException;
 import com.allane.leasingapi.model.CustomerEntity;
 import com.allane.leasingapi.model.VehicleEntity;
@@ -103,6 +104,20 @@ class ContractServiceTest extends AbstractIT {
         assertThat(contract.getVehicle().getModel()).isEqualTo("SOMETHING");
         assertThat(contract.getVehicle().getModelYear()).isEqualTo(2006);
         assertThat(contract.getVehicle().getVehicleIdentificationNumber()).isEqualTo("EVERYTHING");
+    }
+
+    @Test
+    void create_throwsBadRequest() {
+
+        //Arrange
+        CrudContractDto input = getContractDTO();
+        input.setValidFrom(Date.valueOf("2023-06-01"));
+        input.setValidUntil(Date.valueOf("2023-05-02"));
+
+        //Act & Assert
+        assertThatThrownBy(() -> classToTest.create(input))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("Valid Until Date Should be Greater than Valid From Date");
     }
 
     @Test
@@ -361,7 +376,6 @@ class ContractServiceTest extends AbstractIT {
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Not Found with Contract ID: 3000000000");
     }
-
 
     private CrudContractDto getContractDTO() {
         CrudContractDto crudContractDto = new CrudContractDto();

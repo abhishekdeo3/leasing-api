@@ -4,6 +4,7 @@ import com.allane.leasingapi.controller.converter.Converter;
 import com.allane.leasingapi.dto.Contract;
 import com.allane.leasingapi.dto.Contracts;
 import com.allane.leasingapi.dto.cruddto.CrudContractDto;
+import com.allane.leasingapi.exception.BadRequestException;
 import com.allane.leasingapi.exception.NotFoundException;
 import com.allane.leasingapi.model.ContractEntity;
 import com.allane.leasingapi.repository.ContractRepository;
@@ -39,6 +40,10 @@ public class ContractService extends Helper implements CRUDOperation<Contract, C
         ContractEntity contractEntity = new ContractEntity();
 
         contractEntity.setMonthlyRate(crudContractDto.getMonthlyRate());
+
+        if(crudContractDto.getValidFrom().after(crudContractDto.getValidUntil())) {
+            throw new BadRequestException("Valid Until Date Should be Greater than Valid From Date");
+        }
 
         contractEntity.setCustomerEntity(crudContractDto.getCustomerId() != null ?
                 findCustomerEntity(crudContractDto.getCustomerId())

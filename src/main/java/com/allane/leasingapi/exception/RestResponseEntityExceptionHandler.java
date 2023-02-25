@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -44,7 +45,7 @@ public class RestResponseEntityExceptionHandler {
     @ApiResponse(responseCode = "400", content = {
             @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class))
     })
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class, DataIntegrityViolationException.class})
     public Problem methodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException e) {
 
         log.warn("BAD_REQUEST exception handled in ApiExceptionHandler: {}", e.getMessage(), e);

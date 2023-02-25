@@ -1,6 +1,5 @@
 package com.allane.leasingapi.controller;
 
-import com.allane.leasingapi.dto.Customers;
 import com.allane.leasingapi.dto.Vehicle;
 import com.allane.leasingapi.dto.Vehicles;
 import com.allane.leasingapi.dto.cruddto.CrudVehicleDto;
