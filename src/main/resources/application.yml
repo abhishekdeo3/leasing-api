@@ -24,10 +24,11 @@ spring:
     baseline-version: 0
     schemas: allane
 
+
   security:
     user:
       name: "allane"
-      password: "allane"
+      password: "$2a$10$3aqwkGA0g6Y8P0bCEfHxruGcYyd67jqnU4/kpi6gzxkApVg5y1qeu"
 
 springdoc:
   swagger-ui:

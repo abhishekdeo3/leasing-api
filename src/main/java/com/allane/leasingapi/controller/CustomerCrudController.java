@@ -28,7 +28,6 @@ public class CustomerCrudController {
         this.customerService = customerService;
     }
 
-
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful response",
                     content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = Integer.class))}),

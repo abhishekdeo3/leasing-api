@@ -377,6 +377,28 @@ class ContractServiceTest extends AbstractIT {
                 .hasMessage("Not Found with Contract ID: 3000000000");
     }
 
+    @Test
+    void update_throwsBadRequest() {
+
+        //Arrange
+        CrudContractDto input = getContractDTO();
+        input.setVehicleId(null);
+        input.setCustomerId(null);
+
+        Contract contract = classToTest.create(input);
+
+        CrudContractDto crudContractDto = getCrudContractDto();
+        crudContractDto.setValidFrom(Date.valueOf("2023-06-01"));
+        crudContractDto.setValidUntil(Date.valueOf("2023-05-02"));
+
+        Long contractNumber = contract.getContractNumber();
+
+        //Act & Assert
+        assertThatThrownBy(() -> classToTest.update(contractNumber, crudContractDto))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("Valid Until Date Should be Greater than Valid From Date");
+    }
+
     private CrudContractDto getContractDTO() {
         CrudContractDto crudContractDto = new CrudContractDto();
         crudContractDto.setMonthlyRate(246.75);

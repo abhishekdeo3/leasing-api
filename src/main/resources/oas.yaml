@@ -1,0 +1,710 @@
+openapi: 3.0.1
+info:
+  title: Allane Leasing API
+  description: This API administrates the Leasing APP. Provides CRUD operation end-point.Main BOs are Customer, Vehicle and Leasing Contract.
+  contact:
+    name: Allane Leasing APP
+    url: https://allane-mobility-group.com/
+    email: leasing@allane-mobility-group.com
+  version: 1.0.0
+  x-business-objects:
+    - Leasing
+  x-business-domain: Allane
+  x-product: Leasing APP
+servers:
+  - url: http://localhost:8091/
+    description: Allane Leasing API local Environment
+security:
+  - Basic-Authentication: []
+paths:
+  /vehicle/{vehicle-id}:
+    get:
+      tags:
+        - vehicle-crud-controller
+      summary: Gets Vehicle
+      operationId: get
+      parameters:
+        - name: vehicle-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json: {}
+        default:
+          description: default response
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+    put:
+      tags:
+        - vehicle-crud-controller
+      summary: Updates the Vehicle
+      operationId: update
+      parameters:
+        - name: vehicle-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrudVehicleDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json: {}
+        default:
+          description: default response
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+    delete:
+      tags:
+        - vehicle-crud-controller
+      summary: Deletes the Vehicle
+      operationId: delete
+      parameters:
+        - name: vehicle-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json: {}
+        default:
+          description: default response
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /customer/{customer-id}:
+    get:
+      tags:
+        - customer-crud-controller
+      summary: Gets Customer
+      operationId: get_1
+      parameters:
+        - name: customer-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json: {}
+        default:
+          description: default response
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+    put:
+      tags:
+        - customer-crud-controller
+      summary: Updates the Customer
+      operationId: update_1
+      parameters:
+        - name: customer-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrudCustomerDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json: {}
+        default:
+          description: default response
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+    delete:
+      tags:
+        - customer-crud-controller
+      summary: Deletes the Customer
+      operationId: delete_1
+      parameters:
+        - name: customer-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json: {}
+        default:
+          description: default response
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /contract/{contract-number}:
+    get:
+      tags:
+        - contract-crud-controller
+      summary: Gets Contract
+      operationId: get_2
+      parameters:
+        - name: contract-number
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json: {}
+        default:
+          description: default response
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+    put:
+      tags:
+        - contract-crud-controller
+      summary: Updates the Contract
+      operationId: update_2
+      parameters:
+        - name: contract-number
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrudContractDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json: {}
+        default:
+          description: default response
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+    delete:
+      tags:
+        - contract-crud-controller
+      summary: Deletes the Contract
+      operationId: delete_2
+      parameters:
+        - name: contract-number
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json: {}
+        default:
+          description: default response
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /vehicle:
+    get:
+      tags:
+        - vehicle-crud-controller
+      summary: Gets All Vehicles
+      operationId: getAll
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json: {}
+        default:
+          description: default response
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+    post:
+      tags:
+        - vehicle-crud-controller
+      summary: Creates a Vehicle
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrudVehicleDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '400':
+          description: Illegal arguments provided
+          content:
+            application/problem+json: {}
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        default:
+          description: default response
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /customer:
+    get:
+      tags:
+        - customer-crud-controller
+      summary: Gets All Customers
+      operationId: getAll_1
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json: {}
+        default:
+          description: default response
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+    post:
+      tags:
+        - customer-crud-controller
+      summary: Creates a Customer
+      operationId: create_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrudCustomerDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '400':
+          description: Illegal arguments provided
+          content:
+            application/problem+json: {}
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        default:
+          description: default response
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /contract:
+    get:
+      tags:
+        - contract-crud-controller
+      summary: Gets All Contract
+      operationId: getAll_2
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json: {}
+        default:
+          description: default response
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+    post:
+      tags:
+        - contract-crud-controller
+      summary: Creates a Contract
+      operationId: create_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrudContractDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '400':
+          description: Illegal arguments provided
+          content:
+            application/problem+json: {}
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        default:
+          description: default response
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+components:
+  schemas:
+    Problem:
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        title:
+          type: string
+        detail:
+          type: string
+    CrudVehicleDto:
+      type: object
+      properties:
+        brand:
+          type: string
+        model:
+          type: string
+        modelYear:
+          type: integer
+          format: int32
+        price:
+          type: number
+          format: double
+        vehicleIdentificationNumber:
+          type: string
+    CrudCustomerDto:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        birthdate:
+          type: string
+          format: date-time
+    CrudContractDto:
+      type: object
+      properties:
+        monthlyRate:
+          type: number
+          format: double
+        validFrom:
+          type: string
+          format: date-time
+        validUntil:
+          type: string
+          format: date-time
+        customerId:
+          type: integer
+          format: int64
+        vehicleId:
+          type: integer
+          format: int64
+  securitySchemes:
+    Basic-Authentication:
+      type: http
+      scheme: basic

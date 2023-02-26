@@ -78,6 +78,10 @@ public class ContractService extends Helper implements CRUDOperation<Contract, C
         ContractEntity contractEntity = findContractEntity(contractNumber)
                 .orElseThrow(() -> new NotFoundException(CONTRACT, contractNumber));
 
+        if(crudContractDto.getValidFrom().after(crudContractDto.getValidUntil())) {
+            throw new BadRequestException("Valid Until Date Should be Greater than Valid From Date");
+        }
+
         contractEntity.setMonthlyRate(crudContractDto.getMonthlyRate());
         contractEntity.setValidFrom(crudContractDto.getValidFrom());
         contractEntity.setValidUntil(crudContractDto.getValidUntil());
