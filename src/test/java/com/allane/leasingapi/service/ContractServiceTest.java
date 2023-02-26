@@ -98,11 +98,13 @@ class ContractServiceTest extends AbstractIT {
         assertThat(contract.getCustomer().getCustomerId()).isEqualTo(savedCustomer.getId());
         assertThat(contract.getCustomer().getFirstName()).isEqualTo("SOMETHING");
         assertThat(contract.getCustomer().getLastName()).isEqualTo("NOTHING");
+        assertThat(contract.getCustomer().getBirthDate()).isEqualTo("2023-06-02");
 
         assertThat(contract.getVehicle().getVehicleId()).isEqualTo(savedVehicle.getId());
         assertThat(contract.getVehicle().getBrand()).isEqualTo("ANYTHING");
         assertThat(contract.getVehicle().getModel()).isEqualTo("SOMETHING");
         assertThat(contract.getVehicle().getModelYear()).isEqualTo(2006);
+        assertThat(contract.getVehicle().getPrice()).isEqualTo(0.0);
         assertThat(contract.getVehicle().getVehicleIdentificationNumber()).isEqualTo("EVERYTHING");
     }
 
@@ -225,11 +227,13 @@ class ContractServiceTest extends AbstractIT {
         assertThat(contract.getCustomer().getCustomerId()).isEqualTo(savedCustomer.getId());
         assertThat(contract.getCustomer().getFirstName()).isEqualTo("SOMETHING");
         assertThat(contract.getCustomer().getLastName()).isEqualTo("NOTHING");
+        assertThat(contract.getCustomer().getBirthDate()).isEqualTo("2023-06-02");
 
         assertThat(contract.getVehicle().getVehicleId()).isEqualTo(savedVehicle.getId());
         assertThat(contract.getVehicle().getBrand()).isEqualTo("ANYTHING");
         assertThat(contract.getVehicle().getModel()).isEqualTo("SOMETHING");
         assertThat(contract.getVehicle().getModelYear()).isEqualTo(2006);
+        assertThat(contract.getVehicle().getPrice()).isEqualTo(0.0);
         assertThat(contract.getVehicle().getVehicleIdentificationNumber()).isEqualTo("EVERYTHING");
 
         //Act
@@ -281,11 +285,13 @@ class ContractServiceTest extends AbstractIT {
         assertThat(contract.getCustomer().getCustomerId()).isEqualTo(savedCustomer.getId());
         assertThat(contract.getCustomer().getFirstName()).isEqualTo("SOMETHING");
         assertThat(contract.getCustomer().getLastName()).isEqualTo("NOTHING");
+        assertThat(contract.getCustomer().getBirthDate()).isEqualTo("2023-06-02");
 
         assertThat(contract.getVehicle().getVehicleId()).isEqualTo(savedVehicle.getId());
         assertThat(contract.getVehicle().getBrand()).isEqualTo("ANYTHING");
         assertThat(contract.getVehicle().getModel()).isEqualTo("SOMETHING");
         assertThat(contract.getVehicle().getModelYear()).isEqualTo(2006);
+        assertThat(contract.getVehicle().getPrice()).isEqualTo(0.0);
         assertThat(contract.getVehicle().getVehicleIdentificationNumber()).isEqualTo("EVERYTHING");
 
         // Arrange
@@ -341,11 +347,13 @@ class ContractServiceTest extends AbstractIT {
         assertThat(contract.getCustomer().getCustomerId()).isEqualTo(savedCustomer.getId());
         assertThat(contract.getCustomer().getFirstName()).isEqualTo("SOMETHING");
         assertThat(contract.getCustomer().getLastName()).isEqualTo("NOTHING");
+        assertThat(contract.getCustomer().getBirthDate()).isEqualTo("2023-06-02");
 
         assertThat(contract.getVehicle().getVehicleId()).isEqualTo(savedVehicle.getId());
         assertThat(contract.getVehicle().getBrand()).isEqualTo("ANYTHING");
         assertThat(contract.getVehicle().getModel()).isEqualTo("SOMETHING");
         assertThat(contract.getVehicle().getModelYear()).isEqualTo(2006);
+        assertThat(contract.getVehicle().getPrice()).isEqualTo(0.0);
         assertThat(contract.getVehicle().getVehicleIdentificationNumber()).isEqualTo("EVERYTHING");
 
         //Arrange

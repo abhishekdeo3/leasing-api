@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
         info = @Info(
                 title = "Allane Leasing API",
                 version = "1.0.0",
-                description = "This API administrates the Leasing APP. Provides CRUD operation end-point." +
+                description = "This API administrates the Leasing APP. Provides CRUD operation end-point. " +
                         "Main BOs are Customer, Vehicle and Leasing Contract.",
                 extensions = {
                         @Extension(properties = {

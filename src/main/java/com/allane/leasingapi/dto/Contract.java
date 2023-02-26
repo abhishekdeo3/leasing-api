@@ -47,6 +47,9 @@ public class Contract {
 
         @JsonProperty("vehicle_identification_number")
         private String vehicleIdentificationNumber;
+
+        @JsonProperty("price")
+        private double price;
     }
 
     @Getter
@@ -62,5 +65,8 @@ public class Contract {
 
         @JsonProperty("last_name")
         private String lastName;
+
+        @JsonProperty("birth_date")
+        private String birthDate;
     }
 }

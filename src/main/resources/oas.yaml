@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Allane Leasing API
-  description: This API administrates the Leasing APP. Provides CRUD operation end-point.Main BOs are Customer, Vehicle and Leasing Contract.
+  description: This API administrates the Leasing APP. Provides CRUD operation end-point. Main BOs are Customer, Vehicle and Leasing Contract.
   contact:
     name: Allane Leasing APP
     url: https://allane-mobility-group.com/
