@@ -1,19 +1,19 @@
 openapi: 3.0.1
 info:
-  title: Allane Leasing API
+  title: Car Leasing API
   description: This API administrates the Leasing APP. Provides CRUD operation end-point. Main BOs are Customer, Vehicle and Leasing Contract.
   contact:
-    name: Allane Leasing APP
-    url: https://allane-mobility-group.com/
-    email: leasing@allane-mobility-group.com
+    name: Car Leasing APP
+    url: https://car-leasing-xxx.com/
+    email: car@leasing.com
   version: 1.0.0
   x-business-objects:
     - Leasing
-  x-business-domain: Allane
+  x-business-domain: Leasing
   x-product: Leasing APP
 servers:
   - url: http://localhost:8091/
-    description: Allane Leasing API local Environment
+    description: Car Leasing API local Environment
 security:
   - Basic-Authentication: []
 paths:

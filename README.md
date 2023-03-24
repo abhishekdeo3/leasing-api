@@ -14,13 +14,13 @@ java -jar build/libs/leasing-api-0.0.1-SNAPSHOT.jar
 
 ### MySQL Database Available at:
 ```
-http://localhost:8180/?server=db&username=user&db=allane
+http://localhost:8180/?server=db&username=user&db=test
 ```
 ### Swagger UI
 
 ```
-User: allane
-Password: allane
+User: test
+Password: test
 
 http://localhost:8091/swagger-ui/index.html
 ```

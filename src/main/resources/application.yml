@@ -6,9 +6,9 @@ spring:
   profiles:
     active: local
   datasource:
-    url: jdbc:mysql://localhost:3306/allane?user=user&password=password
+    url: jdbc:mysql://localhost:3306/test?user=user&password=password
     hikari:
-      schema: allane
+      schema: test
   jpa:
     database: mysql
     open-in-view: false
@@ -16,19 +16,19 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
-        default_schema: allane
+        default_schema: test
 
   flyway:
     enabled: true
     baseline-on-migrate: true
     baseline-version: 0
-    schemas: allane
+    schemas: test
 
 
   security:
     user:
-      name: "allane"
-      password: "$2a$10$3aqwkGA0g6Y8P0bCEfHxruGcYyd67jqnU4/kpi6gzxkApVg5y1qeu"
+      name: "test"
+      password: "$2a$10$Uw6VMk7eJIPSfSYBwtGF7eW1mBTgSSmmb4RD8WjlWGWPbn6usnJBe"
 
 springdoc:
   swagger-ui:
@@ -72,7 +72,7 @@ spring:
       on-profile: local
 
   datasource:
-    url: jdbc:mysql://localhost:3306/allane?user=user&password=password
+    url: jdbc:mysql://localhost:3306/test?user=user&password=password
   jpa:
     properties:
       hibernate:
